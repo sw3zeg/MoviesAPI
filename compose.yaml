@@ -1,0 +1,32 @@
+﻿version: '3.4'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 5310
+      POSTGRES_DB: movies
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  
+  api:
+    image: movies.api
+    container_name: api
+    build:
+      context: .
+      dockerfile: Movies.API/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    entrypoint: >
+      sh -c "echo 'Waiting for PostgreSQL to be ready...';
+      dotnet Movies.API.dll"

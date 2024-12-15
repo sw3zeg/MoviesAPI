@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Movies.Application\Movies.Application.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Dapper" Version="2.1.35" />
+      <PackageReference Include="dbup-postgresql" Version="6.0.0-beta.13" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Migrations\Init.sql" />
+      <None Remove="Migrations\AddTsVector.sql" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Migrations\01_Init.sql" />
+      <EmbeddedResource Include="Migrations\01_Init.sql" />
+      <None Remove="Migrations\02_AddTsvVector.sql" />
+      <None Remove="Migrations\03_AddPGTrgm.sql" />
+      <None Remove="Migrations\02_AddPgTrgm.sql" />
+      <EmbeddedResource Include="Migrations\02_AddPgTrgm.sql" />
+      <None Remove="Migrations\03_AddTestingSchema.sql" />
+    </ItemGroup>
+
+</Project>
