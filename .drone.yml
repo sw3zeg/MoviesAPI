@@ -11,7 +11,7 @@ steps:
     commands:
       - docker build -t movies.api -f Movies.API/Dockerfile .
 
-  - name: run movies.api + postgres via docker-compose
+  - name: run movies.api
     image: docker/compose:1.29.2
     volumes:
       - name: dockersock
