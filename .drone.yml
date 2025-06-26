@@ -19,7 +19,7 @@ steps:
     commands:
       - docker-compose -f docker-compose.yml up -d --build
 
-  - name: run load testing
+  - name: run load testing metrics plugin
     image: swezeg/loadtestingmetricsplugin:2.0
     privileged: true
     volumes:
