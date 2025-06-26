@@ -1,0 +1,38 @@
+kind: pipeline
+type: docker
+name: movies-api-pipeline
+
+steps:
+  - name: build movies.api image
+    image: docker
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    commands:
+      - docker build -t movies.api -f Movies.API/Dockerfile .
+
+  - name: run movies.api + postgres via docker-compose
+    image: docker/compose:1.29.2
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    commands:
+      - docker-compose -f docker-compose.yml up -d --build
+
+  - name: run load testing
+    image: swezeg/loadtestingmetricsplugin:2.0
+    privileged: true
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    environment:
+      SUBSCRIBE_TELEGRAM: true
+      TELEGRAM_TOKEN: 8060387975:AAGTxAHHqHZo7LKpD4z7aLKx7LEZSngh8k8
+      TELEGRAM_CHAT_ID: 958007638
+      SENDING_FORMAT: TEXT_FORMAT
+      ONLY_CURRENT_TEST: true
+
+volumes:
+  - name: dockersock
+    host:
+      path: /var/run/docker.sock
